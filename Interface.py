@@ -1,3 +1,5 @@
+#-*- coding: UTF-8 -*-
+
 import Motor as motor 
 
 #系统检查功能还没做好。。。
@@ -17,7 +19,7 @@ while active == True:
     print('\n')
     cmd = input('CMD HIER >>> ')
     
-    if cmd == 'stop':
+    if cmd == 'end session':
         active = False
     else: 
         print('PROCESSING......')
@@ -27,13 +29,16 @@ while active == True:
         code = cmd.split()
 
         #报错机制
-        if code[0] != 'forward' and code[0] != 'backward' and code[0] != 'leftturn' and code[0] != 'rightturn':
-            print('ERROR: WRONG COMMAND')
+        if len(code) == 2:
+            if code[0] != 'forward' and code[0] != 'backward' and code[0] != 'leftturn' and code[0] != 'rightturn' and code[0] != 'stop' and type(code[1]) is int:
+                print('ERROR: WRONG COMMAND')
+            else:
+                print('PROCESSING COMPLETE')
+                #理解两个关键词+更新引擎状态
+                engine_1.update_engine(cmd_dictionary_1[code[0]], int(code[1]))
+                engine_2.update_engine(cmd_dictionary_2[code[0]], int(code[1]))
         else:
-            print('PROCESSING COMPLETE')
-            #理解两个关键词+更新引擎状态
-            engine_1.update_engine(cmd_dictionary_1[code[0]], int(code[1]))
-            engine_2.update_engine(cmd_dictionary_2[code[0]], int(code[1]))
+            print('ERROR: WRONG SYNTAX')
 
 
 print('\nCONSOLE OFFLINE')

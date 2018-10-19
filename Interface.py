@@ -1,44 +1,79 @@
 #-*- coding: UTF-8 -*-
 
-import Motor as motor 
+import pygame as pygame
+import sys as sys
+import Engines as engine
+#
+#
+#还有其他组件需要加在这
 
-#系统检查功能还没做好。。。
-print('CONSOLE ONLINE \n')
+def main():
+    """主循环"""
+    pygame.init()
+    screen = pygame.display.set_mode((800,600))
+    pygame.display.set_caption('Console')
 
-#定义用户输入字典
-cmd_dictionary_1 = {'forward':1, 'backward': -1, 'leftturn': -1, 'stop':0}
-cmd_dictionary_2 = {'forward':1, 'backward': -1, 'leftturn': 1, 'stop':0}
+    #初始化电机对象
+    engine1 = engine.Engine(1)
+    engine2 = engine.Engine(2)
 
-#实例化引擎
-engine_1 = motor.engine(1, 100, 110, 0, 0)
-engine_2 = motor.engine(2, 120, 200, 0, 0)
-
-#主循环
-active = True
-while active == True:
-    print('\n')
-    cmd = input('CMD HIER >>> ')
-    
-    if cmd == 'end session':
-        active = False
-    else: 
-        print('PROCESSING......')
-
-        #获取并处理用户输入
-        code = []
-        code = cmd.split()
-
-        #报错机制
-        if len(code) == 2:
-            if code[0] != 'forward' and code[0] != 'backward' and code[0] != 'leftturn' and code[0] != 'rightturn' and code[0] != 'stop' and type(code[1]) is int:
-                print('ERROR: WRONG COMMAND')
-            else:
-                print('PROCESSING COMPLETE')
-                #理解两个关键词+更新引擎状态
-                engine_1.update_engine(cmd_dictionary_1[code[0]], int(code[1]))
-                engine_2.update_engine(cmd_dictionary_2[code[0]], int(code[1]))
-        else:
-            print('ERROR: WRONG SYNTAX')
+    while True:
+        check_event(engine1, engine2)
+        flip(engine1, engine2)
 
 
-print('\nCONSOLE OFFLINE')
+def check_event(engine1, engine2):
+    """键盘事件检查"""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+
+        elif event.type == pygame.KEYDOWN:
+            action_down(event.key, engine1, engine2)
+
+        elif event.type == pygame.KEYUP:
+            action_up(event.key, engine1, engine2)
+
+
+def action_down(key, engine1, engine2):
+    """响应键盘按下"""
+    if key == pygame.K_w:
+        engine1.direction = 1
+        engine1.speed = 1
+        engine2.direction = 1
+        engine2.speed = 1
+
+    elif key == pygame.K_a:
+        engine1.direction = -1
+        engine1.speed = 1
+        engine2.direction = 1
+        engine2.speed = 1
+
+    elif key == pygame.K_s:
+        engine1.direction = -1
+        engine1.speed = 1
+        engine2.direction = -1
+        engine2.speed = 1
+
+    elif key == pygame.K_d:
+        engine1.direction = 1
+        engine1.speed = 1
+        engine2.direction = -1
+        engine2.speed = 1
+
+
+def action_up(key, engine1, engine2):
+    """响应键盘抬起"""
+    engine1.direction = 1
+    engine1.speed = 0
+    engine2.direction = 1
+    engine2.speed = 0
+
+
+def flip(engine1, engine2):
+    """把程序储存的状态更新到电机上"""
+    #需要写上正确的gpio代码
+    print('ENGINE', engine1.num, 'IS GOING ON DIRECTION:', engine1.direction, 'AT SPEED OF', engine1.speed)
+    print('ENGINE', engine2.num, 'IS GOING ON DIRECTION:', engine2.direction, 'AT SPEED OF', engine2.speed)
+
+main()

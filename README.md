@@ -5,3 +5,5 @@ Command format: [direction] [speed/angle]
 
 Oct. 2018, Major goal: new interface based on keyboard control.
 Oct.19: focusing on controling the two engines first.
+
+Up to now version: 2.0.1

@@ -2,20 +2,19 @@
 
 import pygame as pygame
 import sys as sys
-import Engines as engine
+import Engines as engines
 import Keyboard as keyboard
 #
 #
 #还有其他组件需要加在这
 
-def init():
+def main():
     """初始化"""
     #初始化电机(一个引擎一个舵机)对象，设置状态为停止，并提供报错通道
     try:
-        main_engine = engine.Engine(0)
-        steer = engine.Engine(0)
-
-
+        main_engine = engines.Engine(0, 11, 13, 15, 16)
+        steer = engines.Engine(0, 5, 5, 5, 5)
+        engines.setup(main_engine, steer)
     except:
         print('ENGINE INITIALIZATION FAILED')
         input('PRESS ENTER TO QUIT')
@@ -30,6 +29,11 @@ def init():
         print('GRAPHIC CONSOLE INITIALIZATION FAILED')
         input('PRESS ENTER TO QUIT')
         sys.exit()
+        
+    #开启循环
+    while True:
+        check_event(main_engine, steer)
+        engines.flip(main_engine, steer)
        
 
 
@@ -45,11 +49,5 @@ def check_event(engine, steer):
         elif event.type == pygame.KEYUP:
             keyboard.action_up(event.key, engine, steer)
 
-
     
-init()
-            
-#开启循环
-while True:
-    check_event(main_engine, steer)
-    engine.flip(main_engine, steer)
+main()

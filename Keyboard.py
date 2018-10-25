@@ -7,9 +7,10 @@ def action_down(key, engine, steer):
         engine.status = 1
 
     elif key == pygame.K_s:
-        engine.status = 2
+        engine.status = -1
 
 
-def action_up(key, engine1, engine2):
+def action_up(key, engine, steer):
     """响应键盘抬起"""
-    
+    if key == pygame.K_w or key == pygame.K_s:
+        engine.status = 0

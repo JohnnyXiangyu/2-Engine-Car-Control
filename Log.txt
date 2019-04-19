@@ -6,4 +6,4 @@ Up to now version: 2.0.1
 Oct. 25: Applying the new design of steering and power engines, using one motor for each function.
 Version: 2.1.1
 
-Apr. 19, 2019: continue working on ver2.1.1
+Apr. 19, 2019: continue working on C++ ver0.0.1
